@@ -1,0 +1,17 @@
+.input {
+  border: none;
+  border-bottom: 1px solid #718093;
+  background-color: transparent;
+  color: #f5f6fa;
+}
+.input:focus {
+  outline: none;
+}
+.inputGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 230px;
+  color: #f5f6fa;
+  margin: 8%;
+}
