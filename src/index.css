@@ -5,7 +5,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100vh;
 }
 
 code {
@@ -16,4 +15,5 @@ code {
   height: inherit;
   background-color: #0097e6;
   overflow-x: hidden;
+  min-height: 100vh;
 }

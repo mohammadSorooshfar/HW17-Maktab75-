@@ -19,6 +19,11 @@ class Application extends Component {
       showForm: false,
     });
   };
+  handleFlagChange() {
+    this.setState({
+      showForm: true,
+    });
+  }
   render() {
     console.log(this.state);
     const showFormOrTable = () => {
@@ -33,7 +38,16 @@ class Application extends Component {
           </form>
         );
       } else {
-        return <PhoneBookTable contacts={this.state.contacts} />;
+        return (
+          <>
+            <PhoneBookTable
+              handleFlagChange={() => {
+                this.handleFlagChange();
+              }}
+              contacts={this.state.contacts}
+            />
+          </>
+        );
       }
     };
     return <>{showFormOrTable()}</>;
