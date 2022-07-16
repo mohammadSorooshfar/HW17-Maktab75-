@@ -7,9 +7,17 @@ export default class PhoneBookTable extends Component {
     this.state = {
       enableEdit: Array(props.contacts.length).fill(false),
       disableEdit: false,
-      name: "",
-      family: "",
-      email: "",
+      editInputs: {
+        name: "",
+        family: "",
+        email: "",
+      },
+      modalDetails: {
+        name: "",
+        family: "",
+        email: "",
+        id: "",
+      },
       errors: {
         name: "",
         family: "",
@@ -24,16 +32,18 @@ export default class PhoneBookTable extends Component {
     this.setState({
       enableEdit: enableEdit,
       disableEdit: true,
-      name: contact.name,
-      family: contact.family,
-      email: contact.email,
+      editInputs: {
+        name: contact.name,
+        family: contact.family,
+        email: contact.email,
+      },
     });
   };
   handleChange = (e) => {
     const name = e.target.name.toLowerCase();
     const value = e.target.value;
     this.setState({
-      [name]: value,
+      editInputs: { ...this.state.editInputs, [name]: value },
     });
     this.validation(e);
   };
@@ -75,21 +85,34 @@ export default class PhoneBookTable extends Component {
     );
     if (haveError.length === 0) {
       let updatedContact = {
-        name: this.state.name,
-        family: this.state.family,
-        email: this.state.email,
+        name: this.state.editInputs.name,
+        family: this.state.editInputs.family,
+        email: this.state.editInputs.email,
       };
       let enableEdit = this.state.enableEdit;
       enableEdit[index] = false;
       this.setState({
         enableEdit: enableEdit,
         disableEdit: false,
-        name: "",
-        family: "",
-        email: "",
+        editInputs: {
+          name: "",
+          family: "",
+          email: "",
+        },
       });
       this.props.handleSave(index, updatedContact);
     }
+  };
+  handleModal = (contact) => {
+    this.setState({
+      showDeleteModal: true,
+      modalDetails: {
+        name: contact.name,
+        family: contact.family,
+        email: contact.email,
+        id: contact.id,
+      },
+    });
   };
   render() {
     const showEditInputs = (contact, index) => {
@@ -103,7 +126,7 @@ export default class PhoneBookTable extends Component {
                 type="text"
                 label={false}
                 onChange={(e) => this.handleChange(e)}
-                value={this.state.name}
+                value={this.state.editInputs.name}
                 error={this.state.errors.name}
                 validation={{
                   required: true,
@@ -117,7 +140,7 @@ export default class PhoneBookTable extends Component {
                 type="text"
                 label={false}
                 onChange={(e) => this.handleChange(e)}
-                value={this.state.family}
+                value={this.state.editInputs.family}
                 error={this.state.errors.family}
                 validation={{
                   required: true,
@@ -130,7 +153,7 @@ export default class PhoneBookTable extends Component {
                 type="email"
                 label={false}
                 onChange={(e) => this.handleChange(e)}
-                value={this.state.email}
+                value={this.state.editInputs.email}
                 error={this.state.errors.email}
                 validation={{
                   required: true,
@@ -186,7 +209,7 @@ export default class PhoneBookTable extends Component {
                     ? cssClasses.disabled
                     : cssClasses.delete
                 }
-                onClick={() => this.props.handleDelete(contact.id)}
+                onClick={() => this.handleModal(contact)}
                 disabled={this.state.disableEdit}
               >
                 Delete
@@ -240,8 +263,26 @@ export default class PhoneBookTable extends Component {
           }
         >
           <div className={cssClasses.modalContent}>
-            <span class="close">&times;</span>
-            <p>Some text in the Modal..</p>
+            <h3>name: {this.state.modalDetails.name}</h3>
+            <h3>family: {this.state.modalDetails.family}</h3>
+            <h3>email: {this.state.modalDetails.email}</h3>
+          </div>
+          <div className={cssClasses.modalFooter}>
+            <button
+              className={cssClasses.delete}
+              onClick={() => {
+                this.props.handleDelete(this.state.modalDetails.id);
+                this.setState({ showDeleteModal: false });
+              }}
+            >
+              Delete
+            </button>
+            <button
+              className={cssClasses.cancel}
+              onClick={() => this.setState({ showDeleteModal: false })}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       </>
