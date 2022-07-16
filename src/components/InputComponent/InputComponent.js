@@ -3,7 +3,6 @@ import cssClasses from "./InputComponent.module.css";
 
 export default class InputComponent extends Component {
   render() {
-    console.log({ ...this.props });
     return (
       <>
         <div className={cssClasses.inputGroup}>
@@ -13,7 +12,15 @@ export default class InputComponent extends Component {
             ""
           )}
           <div className={cssClasses.inputErrorDiv}>
-            <input className={cssClasses.input} {...this.props} />
+            <input
+              className={cssClasses.input}
+              type={this.props.type}
+              name={this.props.name}
+              onChange={this.props.onChange}
+              value={this.props.value}
+              placeholder={`Enter your ${this.props.name}`}
+              {...this.props.validation}
+            />
             <div className={cssClasses.error}>{this.props.error}</div>
           </div>
         </div>

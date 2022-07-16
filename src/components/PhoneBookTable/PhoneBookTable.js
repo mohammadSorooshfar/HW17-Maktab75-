@@ -10,6 +10,12 @@ export default class PhoneBookTable extends Component {
       name: "",
       family: "",
       email: "",
+      errors: {
+        name: "",
+        family: "",
+        email: "",
+      },
+      showDeleteModal: false,
     };
   }
   handleEdit = (index, contact) => {
@@ -29,27 +35,63 @@ export default class PhoneBookTable extends Component {
     this.setState({
       [name]: value,
     });
+    this.validation(e);
+  };
+  validation = (e) => {
+    const name = e.target.name.toLowerCase();
+    let error = "";
+    if (!e.target.checkValidity()) {
+      switch (name) {
+        case "name":
+          error = "Min length of name is 4";
+          break;
+        case "family":
+          error = "Family is required";
+          break;
+        case "email":
+          error = "Email format is invalid";
+          break;
+        default:
+          break;
+      }
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          [name]: error,
+        },
+      });
+    } else {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          [name]: error,
+        },
+      });
+    }
   };
   handleSave = (index) => {
-    console.log(this.state);
-    let updatedContact = {
-      name: this.state.name,
-      family: this.state.family,
-      email: this.state.email,
-    };
-    let enableEdit = this.state.enableEdit;
-    enableEdit[index] = false;
-    this.setState({
-      enableEdit: enableEdit,
-      disableEdit: false,
-      name: "",
-      family: "",
-      email: "",
-    });
-    this.props.handleSave(index, updatedContact);
+    let haveError = Object.values(this.state.errors).filter(
+      (elem) => elem !== ""
+    );
+    if (haveError.length === 0) {
+      let updatedContact = {
+        name: this.state.name,
+        family: this.state.family,
+        email: this.state.email,
+      };
+      let enableEdit = this.state.enableEdit;
+      enableEdit[index] = false;
+      this.setState({
+        enableEdit: enableEdit,
+        disableEdit: false,
+        name: "",
+        family: "",
+        email: "",
+      });
+      this.props.handleSave(index, updatedContact);
+    }
   };
   render() {
-    console.log(this.state);
     const showEditInputs = (contact, index) => {
       if (this.state.enableEdit[index]) {
         return (
@@ -60,9 +102,13 @@ export default class PhoneBookTable extends Component {
                 name="Name"
                 type="text"
                 label={false}
-                handleChange={(e) => this.handleChange(e)}
+                onChange={(e) => this.handleChange(e)}
                 value={this.state.name}
-                error=""
+                error={this.state.errors.name}
+                validation={{
+                  required: true,
+                  minLength: 4,
+                }}
               />
             </td>
             <td>
@@ -70,9 +116,12 @@ export default class PhoneBookTable extends Component {
                 name="Family"
                 type="text"
                 label={false}
-                handleChange={(e) => this.handleChange(e)}
+                onChange={(e) => this.handleChange(e)}
                 value={this.state.family}
-                error="fuckman"
+                error={this.state.errors.family}
+                validation={{
+                  required: true,
+                }}
               />
             </td>
             <td>
@@ -80,9 +129,13 @@ export default class PhoneBookTable extends Component {
                 name="Email"
                 type="email"
                 label={false}
-                handleChange={(e) => this.handleChange(e)}
+                onChange={(e) => this.handleChange(e)}
                 value={this.state.email}
-                error=""
+                error={this.state.errors.email}
+                validation={{
+                  required: true,
+                  pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$",
+                }}
               />
             </td>
             <td>
@@ -144,39 +197,54 @@ export default class PhoneBookTable extends Component {
       }
     };
     return (
-      <div className={cssClasses.flex}>
-        <table className={cssClasses.table}>
-          <thead>
-            <tr className={cssClasses.trHead}>
-              <th>Name</th>
-              <th>Family</th>
-              <th>Email</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.contacts.map((contact, index) => (
-              <tr
-                className={
-                  index % 2 === 0 ? cssClasses.trLight : cssClasses.trDark
-                }
-                key={contact.id}
-              >
-                {showEditInputs(contact, index)}
+      <>
+        <div className={cssClasses.flex}>
+          <table className={cssClasses.table}>
+            <thead>
+              <tr className={cssClasses.trHead}>
+                <th>Name</th>
+                <th>Family</th>
+                <th>Email</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <button
-          className={cssClasses.flagButton}
-          onClick={() => {
-            this.props.handleFlagChange();
-          }}
+            </thead>
+            <tbody>
+              {this.props.contacts.map((contact, index) => (
+                <tr
+                  className={
+                    index % 2 === 0 ? cssClasses.trLight : cssClasses.trDark
+                  }
+                  key={contact.id}
+                >
+                  {showEditInputs(contact, index)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <button
+            className={cssClasses.flagButton}
+            onClick={() => {
+              this.props.handleFlagChange();
+            }}
+          >
+            Add new contact
+          </button>
+        </div>
+
+        <div
+          className={
+            this.state.showDeleteModal
+              ? cssClasses.modalBlock
+              : cssClasses.modal
+          }
         >
-          Add new contact
-        </button>
-      </div>
+          <div className={cssClasses.modalContent}>
+            <span class="close">&times;</span>
+            <p>Some text in the Modal..</p>
+          </div>
+        </div>
+      </>
     );
   }
 }

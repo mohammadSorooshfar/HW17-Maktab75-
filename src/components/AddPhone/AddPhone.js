@@ -69,8 +69,10 @@ class AddPhone extends Component {
           onChange={(e) => this.handleChange(e)}
           value={this.state.name}
           error={this.state.errors.name}
-          required
-          minLength={4}
+          validation={{
+            required: true,
+            minLength: 4,
+          }}
         />
         <InputComponent
           name="Family"
@@ -79,9 +81,9 @@ class AddPhone extends Component {
           onChange={(e) => this.handleChange(e)}
           value={this.state.family}
           error={this.state.errors.family}
-          required
-          minLength={0}
-          pattern="/^[A-Za-z]+$/"
+          validation={{
+            required: true,
+          }}
         />
         <InputComponent
           name="Email"
@@ -90,9 +92,10 @@ class AddPhone extends Component {
           onChange={(e) => this.handleChange(e)}
           value={this.state.email}
           error={this.state.errors.email}
-          required
-          minLength={0}
-          pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          validation={{
+            required: true,
+            pattern: "[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$",
+          }}
         />
         <button className={cssClasses.button}>Add</button>
       </form>
