@@ -15,33 +15,43 @@ td,
 th {
   padding: 15px;
 }
-.edit {
+.edit,
+.delete,
+.save,
+.disabled {
   color: #dcdde1;
-  background-color: #e1b12c;
   border: none;
   border-radius: 5px;
   padding: 5px 15px;
   transition: all 0.3s;
+}
+.disabled {
+  background-color: #718093;
+}
+.edit {
+  background-color: #e1b12c;
 }
 .delete {
-  color: #dcdde1;
   background-color: #c23616;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 15px;
-  transition: all 0.3s;
 }
-.edit:hover {
+.save {
+  background-color: #44bd32;
+}
+.edit:hover,
+.delete:hover,
+.save:hover {
   border-radius: 0;
   color: #393f4e;
   cursor: pointer;
+}
+.edit:hover {
   background-color: #fbc531;
 }
 .delete:hover {
-  border-radius: 0;
-  cursor: pointer;
-  color: #393f4e;
   background-color: #e84118;
+}
+.save:hover {
+  background-color: #4cd137;
 }
 .flagButton:hover {
   background-color: #45bd32bc;

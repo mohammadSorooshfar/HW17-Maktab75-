@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import cssClasses from "./Application.module.css";
 import InputComponent from "../InputComponent/InputComponent";
 import PhoneBookTable from "../PhoneBookTable/PhoneBookTable";
+import AddPhone from "../AddPhone/AddPhone";
 class Application extends Component {
   constructor() {
     super();
@@ -10,6 +11,7 @@ class Application extends Component {
   handleAddContact = (e) => {
     e.preventDefault();
     let newContact = {
+      id: this.state.contacts.length + 1,
       name: e.target.Name.value,
       family: e.target.Family.value,
       email: e.target.Email.value,
@@ -24,25 +26,40 @@ class Application extends Component {
       showForm: true,
     });
   }
+  handleDelete(id) {
+    let contacts = this.state.contacts.filter((contact) => contact.id !== id);
+    this.setState({
+      contacts: contacts,
+    });
+  }
+  handleSave(index, updatedContact) {
+    let contacts = this.state.contacts;
+    console.log(index, updatedContact);
+    const { name, family, email } = updatedContact;
+    contacts[index].name = name;
+    contacts[index].family = family;
+    contacts[index].email = email;
+    this.setState({
+      contacts: contacts,
+    });
+  }
   render() {
     console.log(this.state);
     const showFormOrTable = () => {
       if (this.state.showForm) {
-        return (
-          <form className={cssClasses.form} onSubmit={this.handleAddContact}>
-            <h1>Add Contacts</h1>
-            <InputComponent name="Name" type="text" />
-            <InputComponent name="Family" type="text" />
-            <InputComponent name="Email" type="email" />
-            <button className={cssClasses.button}>Add</button>
-          </form>
-        );
+        return <AddPhone handleAddContact={(e) => this.handleAddContact(e)} />;
       } else {
         return (
           <>
             <PhoneBookTable
               handleFlagChange={() => {
                 this.handleFlagChange();
+              }}
+              handleDelete={(id) => {
+                this.handleDelete(id);
+              }}
+              handleSave={(index, updatedContact) => {
+                this.handleSave(index, updatedContact);
               }}
               contacts={this.state.contacts}
             />

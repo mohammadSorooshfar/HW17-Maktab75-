@@ -9,9 +9,18 @@
 }
 .inputGroup {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   width: 230px;
   color: #f5f6fa;
-  margin: 8%;
+  margin: 4%;
+}
+.error {
+  margin-top: 5px;
+  color: #e84118;
+  font-size: 14px;
+}
+.inputErrorDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
