@@ -13,7 +13,7 @@ code {
 }
 #root {
   height: inherit;
-  /* background-color: #0097e6; */
+  background-color: #0097e6;
   overflow-x: hidden;
   min-height: 100vh;
 }

@@ -4,7 +4,7 @@ import Application2 from "./components/q2/application/Application";
 function App() {
   return (
     <div className="App">
-      <Application2 />
+      <Application />
     </div>
   );
 }

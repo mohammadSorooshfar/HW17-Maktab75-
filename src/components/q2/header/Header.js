@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { FaAngleDown, FaHome } from "react-icons/fa";
 const Breadcrumbs = styled.ul`
   list-style: none;
   padding: 0;
   & > li:after {
     content: "/";
-    padding: 0 8px;
+    padding: 0 15px;
   }
 `;
 
@@ -20,16 +21,20 @@ const Crumb = styled.li`
   p {
     color: grey;
     display: inline;
+    svg {
+      margin-bottom: -2px;
+      margin-right: 2px;
+    }
   }
 `;
 const BluePStyle = styled.p`
   color: blue !important;
+  font-weight: bold;
 `;
 const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 0 2%;
 `;
 const NavbarStyle = styled.div`
   display: flex;
@@ -55,16 +60,26 @@ export default class Header extends Component {
       <Nav>
         <Breadcrumbs>
           <Crumb>
-            <p>Wine</p>
+            <p>
+              <FaHome />
+              Home page
+            </p>
           </Crumb>
           <Crumb>
-            <p>Red</p>
+            <p>. . .</p>
           </Crumb>
           <Crumb>
-            <p>Mascota</p>
+            <p>
+              Dashboard <FaAngleDown />
+            </p>
           </Crumb>
           <Crumb>
-            <BluePStyle>Mascota</BluePStyle>
+            <p>
+              Products <FaAngleDown />
+            </p>
+          </Crumb>
+          <Crumb>
+            <BluePStyle>Orders</BluePStyle>
           </Crumb>
         </Breadcrumbs>
         <NavbarStyle>

@@ -3,6 +3,7 @@ import Header from "../header/Header";
 import SideBar from "../side bar/SideBar";
 import styled from "styled-components";
 import SearchBar from "../search bar/SearchBar";
+import Main from "../main/Main";
 const BodyStyle = styled.div`
   display: flex;
   width: 100%;
@@ -12,6 +13,7 @@ const BodyStyle = styled.div`
 const MainStyle = styled.div`
   width: 100%;
   min-height: 100%;
+  padding: 0 2%;
 `;
 export default class Application extends Component {
   render() {
@@ -21,6 +23,7 @@ export default class Application extends Component {
         <MainStyle>
           <Header />
           <SearchBar />
+          <Main />
         </MainStyle>
       </BodyStyle>
     );
